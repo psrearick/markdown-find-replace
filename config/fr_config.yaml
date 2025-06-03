@@ -1,0 +1,7 @@
+pattern: "*.md"
+recursive: true
+dry_run: false
+pattern_list_file: "fr_list.yaml"
+patterns_file: "fr_patterns.yaml"
+
+pattern_list_name: "normalize_markdown"
