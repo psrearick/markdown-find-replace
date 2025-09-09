@@ -61,6 +61,20 @@ add_new_line_before_lists:
   is_regex: true
   skip_code_blocks: true
 
+add_new_line_after_lists:
+  name: "add_new_line_after_lists"
+  find: "^( *(?:[-*]|\\d+\\.) .*\\n)(?! *(?:[-*]|\\d+\\.) .*)(?!\\n|$)"
+  replace: "$1\\n"
+  is_regex: true
+  skip_code_blocks: true
+
+add_new_line_after_paragraphs:
+  name: "add_new_line_after_paragraphs"
+  find: "^(?!(?: *(?:[-*]|\\d+\\.)|#+) )(.+\\n)(?!\\n|$)"
+  replace: "$1\\n"
+  is_regex: true
+  skip_code_blocks: true
+
 remove_double_spaces:
   name: "remove_double_spaces"
   find: "( *)(\\S+ )( +)"
