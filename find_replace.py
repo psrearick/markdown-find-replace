@@ -225,32 +225,26 @@ class FindReplace:
 
             segment_lines: List[str] = []
             segment_start = start_line
-            current_is_table = False
+            current_is_table: Optional[bool] = None
 
             for offset, line in enumerate(lines):
                 stripped = line.strip()
 
-                if not stripped:
-                    if segment_lines:
-                        processed_sections.append((segment_start, ''.join(segment_lines), False, current_is_table))
-                        segment_lines = []
-                    processed_sections.append((start_line + offset, line, False, False))
-                    segment_start = start_line + offset + 1
-                    current_is_table = False
-                    continue
-
-                is_table_line = self._is_table_line(stripped)
+                is_table_line = self._is_table_line(stripped) if stripped else False
 
                 if segment_lines and is_table_line != current_is_table:
-                    processed_sections.append((segment_start, ''.join(segment_lines), False, current_is_table))
+                    processed_sections.append((segment_start, ''.join(segment_lines), False, bool(current_is_table)))
                     segment_lines = []
+                    segment_start = start_line + offset
+
+                if not segment_lines:
                     segment_start = start_line + offset
 
                 segment_lines.append(line)
                 current_is_table = is_table_line
 
             if segment_lines:
-                processed_sections.append((segment_start, ''.join(segment_lines), False, current_is_table))
+                processed_sections.append((segment_start, ''.join(segment_lines), False, bool(current_is_table)))
 
         return processed_sections
 
