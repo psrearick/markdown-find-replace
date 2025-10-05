@@ -22,6 +22,17 @@ normalize_markdown:
   - "replace_left_double_smart_quote"
   - "replace_right_double_smart_quote"
   - "replace_ellipsis"
+remove_bold_italics:
+  - "protect_first_level_bold_list"
+  - "protect_first_level_bold_list_tag"
+  - "protect_subsequent_level_italicized_list_tag"
+  - "protect_leading_asterisk"
+  - "remove_remaining_bold"
+  - "remove_remaining_italicized"
+  - "restore_protected_bold"
+  - "restore_protected_italicized"
+  - "restore_leading_asterisk"
+
 remove_bold_italics_backticks:
   - "protect_first_level_bold_list"
   - "protect_first_level_bold_list_tag"
