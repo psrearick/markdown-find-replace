@@ -11,6 +11,8 @@ from colorama import Fore, Style, init
 # Initialize colorama for cross-platform color support
 init()
 
+TABLE_SEPARATOR_RE = re.compile(r'^\|?(\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?$')
+
 @dataclass
 class Pattern:
     name: str
@@ -18,6 +20,7 @@ class Pattern:
     replace: str
     is_regex: bool = True
     skip_code_blocks: bool = False
+    skip_tables: bool = False
 
 @dataclass
 class MatchChange:
@@ -151,9 +154,9 @@ class FindReplace:
                 return ('---\n', parts[0] + '\n', '')
         return ('', '', content)
 
-    def _split_content_sections(self, content: str) -> List[tuple[int, str, bool]]:
-        """Split content into sections, marking code blocks.
-        Returns list of (line_number, text, is_code_block) tuples."""
+    def _split_content_sections(self, content: str) -> List[tuple[int, str, bool, bool]]:
+        """Split content into sections, marking code blocks and tables.
+        Returns list of (line_number, text, is_code_block, is_table) tuples."""
         sections = []
         current_section = []
         in_code_block = False
@@ -204,7 +207,80 @@ class FindReplace:
             start_line = line_number - len(current_section)
             sections.append((start_line, ''.join(current_section), in_code_block))
 
-        return sections
+        return self._mark_table_sections(sections)
+
+    def _mark_table_sections(self, sections: List[tuple[int, str, bool]]) -> List[tuple[int, str, bool, bool]]:
+        """Further split sections to flag markdown tables."""
+        processed_sections: List[tuple[int, str, bool, bool]] = []
+
+        for start_line, text, is_code_block in sections:
+            if is_code_block:
+                processed_sections.append((start_line, text, True, False))
+                continue
+
+            lines = text.splitlines(True)
+            if not lines:
+                processed_sections.append((start_line, text, False, False))
+                continue
+
+            segment_lines: List[str] = []
+            segment_start = start_line
+            current_is_table = False
+
+            for offset, line in enumerate(lines):
+                stripped = line.strip()
+
+                if not stripped:
+                    if segment_lines:
+                        processed_sections.append((segment_start, ''.join(segment_lines), False, current_is_table))
+                        segment_lines = []
+                    processed_sections.append((start_line + offset, line, False, False))
+                    segment_start = start_line + offset + 1
+                    current_is_table = False
+                    continue
+
+                is_table_line = self._is_table_line(stripped)
+
+                if segment_lines and is_table_line != current_is_table:
+                    processed_sections.append((segment_start, ''.join(segment_lines), False, current_is_table))
+                    segment_lines = []
+                    segment_start = start_line + offset
+
+                segment_lines.append(line)
+                current_is_table = is_table_line
+
+            if segment_lines:
+                processed_sections.append((segment_start, ''.join(segment_lines), False, current_is_table))
+
+        return processed_sections
+
+    def _is_table_line(self, stripped_line: str) -> bool:
+        """Return True if the line is likely part of a markdown table."""
+        if '|' not in stripped_line:
+            return False
+
+        pipe_count = stripped_line.count('|')
+
+        if stripped_line.startswith('|') and pipe_count >= 2:
+            return True
+
+        if stripped_line.endswith('|') and pipe_count >= 2:
+            return True
+
+        # Alignment/separator rows like --- | :---:
+        if TABLE_SEPARATOR_RE.match(stripped_line):
+            return True
+
+        if ' | ' in stripped_line:
+            return True
+
+        if pipe_count >= 2:
+            return True
+
+        if ' |' in stripped_line or '| ' in stripped_line:
+            return True
+
+        return False
 
     def _get_line_number(self, text: str, pos: int, base_line: int = 1) -> int:
         """Get line number for a position in text."""
@@ -291,12 +367,15 @@ class FindReplace:
 
                 current_text = ""
 
-                for start_line, section_text, is_code_block in sections:
+                for start_line, section_text, is_code_block, is_table in sections:
                     current_text = section_text
 
                     # Apply each pattern in sequence
                     for pattern in self.patterns:
                         if is_code_block and pattern.skip_code_blocks:
+                            continue
+
+                        if is_table and pattern.skip_tables:
                             continue
 
                         new_section, changes = self._apply_pattern_to_section(

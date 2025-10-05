@@ -18,6 +18,7 @@ round_indentations_to_four:
   replace: "    $1"
   is_regex: true
   skip_code_blocks: true
+  skip_tables: true
 
 start_lists_with_dashes:
   name: "start_lists_with_dashes"
@@ -74,6 +75,7 @@ add_new_line_after_paragraphs:
   replace: "$1\\n"
   is_regex: true
   skip_code_blocks: true
+  skip_tables: true
 
 remove_double_spaces:
   name: "remove_double_spaces"
@@ -81,6 +83,7 @@ remove_double_spaces:
   replace: "$1$2"
   is_regex: true
   skip_code_blocks: true
+  skip_tables: true
 
 remove_bold_headings_with_preceding_text:
   name: "remove_bold_headings_with_preceding_text"
@@ -102,6 +105,7 @@ remove_trailing_spaces:
   replace: ""
   is_regex: true
   skip_code_blocks: true
+  skip_tables: true
 
 replace_left_single_smart_quote:
   name: "replace_left_single_smart_quote"
@@ -137,6 +141,7 @@ remove_blank_lines:
   replace: "\\n\\n"
   is_regex: true
   skip_code_blocks: true
+  skip_tables: true
 
 tabs_to_spaces:
   name: "tabs_to_spaces"
@@ -144,6 +149,7 @@ tabs_to_spaces:
   replace: "    "
   is_regex: true
   skip_code_blocks: true
+  skip_tables: true
 
 replace_ellipsis:
   name: "ellipses_to_three_dots"
