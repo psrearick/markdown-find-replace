@@ -9,16 +9,19 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from find_replace import Config, FindReplace, Pattern
+from markdown_find_replace import Pattern
+from markdown_find_replace.pattern_applier import PatternApplier
 
 
 def load_pattern_catalog():
-    with open("config/fr_patterns.yaml", encoding="utf-8") as f:
-        raw = yaml.safe_load(f)
+    path = Path("config/fr_patterns.yaml")
+    with path.open(encoding="utf-8") as handle:
+        raw = yaml.safe_load(handle)
     return {name: Pattern(**spec) for name, spec in raw.items()}
 
 
 PATTERN_CATALOG = load_pattern_catalog()
+APPLIER = PatternApplier()
 
 
 PATTERN_CASES = [
@@ -62,7 +65,6 @@ PATTERN_CASES = [
 @pytest.mark.parametrize("pattern_key,text,expected", PATTERN_CASES)
 def test_pattern_transforms(pattern_key, text, expected):
     pattern = PATTERN_CATALOG[pattern_key]
-    engine = FindReplace(Config())
-    result, changes = engine._apply_pattern_to_section(text, pattern, start_line=1)
+    result, changes = APPLIER.apply(text, pattern, start_line=1)
     assert result == expected
     assert (text == expected and not changes) or changes

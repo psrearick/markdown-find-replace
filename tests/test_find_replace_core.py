@@ -8,11 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from find_replace import Config, FindReplace, Pattern, set_config_values
+from markdown_find_replace import Config, FindReplace, Pattern, set_config_values
+from markdown_find_replace.pattern_applier import PatternApplier
+from markdown_find_replace.section_splitter import SectionSplitter
 
 
 def test_split_content_sections_identifies_frontmatter_code_and_tables():
-    engine = FindReplace(Config())
+    splitter = SectionSplitter()
     text = (
         "---\n"
         "title: Sample\n"
@@ -29,11 +31,11 @@ def test_split_content_sections_identifies_frontmatter_code_and_tables():
         "| v1 | v2 |\n"
     )
 
-    sections = engine._split_content_sections(text)
+    sections = splitter.split(text)
 
-    assert sections[0][2] is True  # frontmatter treated as protected block
-    assert any(sec[2] and "print('hi')" in sec[1] for sec in sections)
-    assert any(sec[3] and "| h1 |" in sec[1] for sec in sections)
+    assert sections[0].is_code_block is True
+    assert any(section.is_code_block and "print('hi')" in section.text for section in sections)
+    assert any(section.is_table and "| h1 |" in section.text for section in sections)
 
 
 def test_apply_plain_text_pattern_reports_changes():
@@ -45,9 +47,9 @@ def test_apply_plain_text_pattern_reports_changes():
         skip_code_blocks=False,
         skip_tables=False,
     )
-    engine = FindReplace(Config())
+    applier = PatternApplier()
     text = "leading\nfoo appears here\n"
-    result, changes = engine._apply_pattern_to_section(text, pattern, start_line=10)
+    result, changes = applier.apply(text, pattern, start_line=10)
 
     assert result == "leading\nbar appears here\n"
     assert changes == [(11, "foo appears here\n", "bar appears here\n")]
@@ -134,7 +136,7 @@ def test_resolve_file_path_relative_to_config(tmp_path):
     config_path.write_text("{}\n", encoding="utf-8")
 
     engine = FindReplace(Config(), config_file_path=str(config_path))
-    resolved = Path(engine._resolve_file_path("data.yaml"))
+    resolved = Path(engine.resolve_path("data.yaml"))
 
     assert resolved == data
 
