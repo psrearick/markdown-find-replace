@@ -22,6 +22,21 @@ normalize_markdown:
   - "replace_left_double_smart_quote"
   - "replace_right_double_smart_quote"
   - "replace_ellipsis"
+
+novel:
+  - "add_new_line_after_headings"
+  - "add_new_line_after_paragraphs"
+  - "remove_double_spaces"
+  - "remove_blank_lines"
+  - "add_new_line_after_bold_or_italicized_lines"
+  - "remove_line_breaks_surrounding_headings"
+  - "remove_trailing_spaces"
+  - "replace_left_single_smart_quote"
+  - "replace_right_single_smart_quote"
+  - "replace_left_double_smart_quote"
+  - "replace_right_double_smart_quote"
+  - "replace_ellipsis"
+
 remove_bold_italics:
   - "protect_first_level_bold_list"
   - "protect_first_level_bold_list_tag"

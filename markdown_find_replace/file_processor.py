@@ -68,6 +68,9 @@ class FileProcessor:
         elif not ends_with_newline and modified_content.endswith('\n'):
             modified_content = modified_content.rstrip('\n')
 
+        if self.config.ensure_new_line:
+            modified_content = modified_content.rstrip('\n') + "\n"
+
         if all_changes:
             self._report_changes(file_path, all_changes)
 

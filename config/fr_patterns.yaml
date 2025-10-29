@@ -269,3 +269,11 @@ restore_leading_asterisk:
   is_regex: true
   skip_code_blocks: true
   skip_tables: false
+
+add_line_to_end_of_file:
+  name: "add_line_to_end_of_file"
+  find: "\\Z"
+  replace: "\n"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false

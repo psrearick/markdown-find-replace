@@ -17,6 +17,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--pattern-name', help='Name of pattern to use from patterns file')
     parser.add_argument('--pattern-list-file', help='Path to pattern list YAML/JSON file')
     parser.add_argument('--pattern-list-name', help='Name of pattern list to use')
+    parser.add_argument('--ensure-new-line', action='store_true', help='End output files in a new line')
     parser.add_argument('--config', help='Path to config YAML/JSON file')
     return parser
 

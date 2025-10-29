@@ -34,6 +34,7 @@ class Config:
     pattern_name: Optional[str] = None
     pattern_list_file: Optional[str] = None
     pattern_list_name: Optional[str] = None
+    ensure_new_line: bool = False
 
 
 @dataclass

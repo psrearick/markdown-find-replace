@@ -24,6 +24,7 @@ def generate_config_dict(args: Optional[Any] = None) -> Dict:
         'pattern_name': args.pattern_name if args else None,
         'pattern_list_file': args.pattern_list_file if args else None,
         'pattern_list_name': args.pattern_list_name if args else None,
+        'ensure_new_line': args.ensure_new_line if args and args.ensure_new_line else None,
     }
 
 
@@ -39,6 +40,9 @@ def set_config_values(config: Dict, config_path: str) -> Dict:
             merged_config[key] = False
             continue
         if key == 'dry_run' and config.get('dry_run'):
+            merged_config[key] = True
+            continue
+        if key == 'ensure_new_line' and config.get('ensure_new_line'):
             merged_config[key] = True
             continue
         if value is not None:
