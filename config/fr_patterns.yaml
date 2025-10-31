@@ -270,6 +270,14 @@ restore_leading_asterisk:
   skip_code_blocks: true
   skip_tables: false
 
+replace_dashes_with_em_dash:
+  name: "replace_dashes_with_em_dash"
+  find: "-{3}"
+  replace: "—"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false
+
 add_line_to_end_of_file:
   name: "add_line_to_end_of_file"
   find: "\\Z"

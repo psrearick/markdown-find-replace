@@ -24,6 +24,12 @@ normalize_markdown:
   - "replace_ellipsis"
 
 novel:
+  - "tabs_to_spaces"
+  - "normalize_list_spaces"
+  - "remove_list_blank_lines"
+  - "round_indentations_to_four"
+  - "start_lists_with_dashes"
+  - "replace_dashes_with_em_dash"
   - "add_new_line_after_headings"
   - "add_new_line_after_paragraphs"
   - "remove_double_spaces"
