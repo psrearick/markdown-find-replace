@@ -48,8 +48,8 @@ add_new_line_after_headings:
 
 ensure_two_line_breaks_before_headings:
   name: "ensure_two_line_breaks_before_headings"
-  find: "\\n+(?=#+ .+)"
-  replace: "\\n\\n"
+  find: "^\\n+(?=#+ .+)"
+  replace: "\\n"
   is_regex: true
   skip_code_blocks: true
   skip_tables: false

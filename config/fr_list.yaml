@@ -14,6 +14,7 @@ normalize_markdown:
   - "add_new_line_after_paragraphs"
   - "remove_double_spaces"
   - "remove_blank_lines"
+  - "replace_dashes_with_em_dash"
   - "remove_bold_headings_with_preceding_text"
   - "remove_line_breaks_surrounding_headings"
   - "remove_trailing_spaces"
