@@ -8,9 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from markdown_find_replace import Config, FindReplace, Pattern, set_config_values
-from markdown_find_replace.pattern_applier import PatternApplier
-from markdown_find_replace.section_splitter import SectionSplitter
+from src.markdown_find_replace.core import Config, FindReplace, Pattern, set_config_values
+from src.markdown_find_replace.core.pattern_applier import PatternApplier
+from src.markdown_find_replace.core.section_splitter import SectionSplitter
 
 
 def test_split_content_sections_identifies_frontmatter_code_and_tables():
@@ -98,10 +98,10 @@ def test_skip_code_blocks_when_applying_patterns(tmp_path):
     content = textwrap.dedent(
         """
         ```
-        code   
+        code
         ```
 
-        line with trailing spaces   
+        line with trailing spaces
         """
     ).lstrip("\n")
     target.write_text(content, encoding="utf-8")
@@ -118,7 +118,7 @@ def test_skip_code_blocks_when_applying_patterns(tmp_path):
     expected = textwrap.dedent(
         """
         ```
-        code   
+        code
         ```
 
         line with trailing spaces

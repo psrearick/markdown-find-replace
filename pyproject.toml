@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markdown-find-replace"
+version = "1.0.0"
+readme = "README.md"
+dependencies = [
+    "PyYAML==6.0.2",
+    "colorama==0.4.6",
+    "pytest==7.4.4"
+]
+
+[project.scripts]
+frepl = "markdown_find_replace.cli:main"

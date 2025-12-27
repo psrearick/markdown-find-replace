@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-
-from markdown_find_replace import Config, FindReplace, generate_config_dict, set_config_values
-
+from importlib.resources import files
+from .core import Config, FindReplace, generate_config_dict, set_config_values
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description='Advanced find and replace utility')
@@ -21,18 +20,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--config', help='Path to config YAML/JSON file')
     return parser
 
-
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
     config_dict = generate_config_dict(args)
-    if args.config:
-        config_dict = set_config_values(config_dict, args.config)
+
+    if not args.config:
+        args.config = str(files('markdown_find_replace.config').joinpath('fr_config.yaml'))
+
+    config_dict = set_config_values(config_dict, args.config)
 
     config = Config(**config_dict)
     FindReplace(config, args.config).process_files()
-
-
-if __name__ == '__main__':
-    main()

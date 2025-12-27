@@ -1,6 +1,6 @@
 normalize_list_spaces:
   name: "normalize_list_spaces"
-  find: "(\\n{0,})\\n*^( *)([\\*\\-.]|\\d+\\.*) {2,}"
+  find: "(\\n{0,})\\n*^( *)([*-.]|\\d+\\.*) {2,}"
   replace: "$1$2$3 "
   is_regex: true
   skip_code_blocks: true
@@ -8,7 +8,23 @@ normalize_list_spaces:
 
 remove_list_blank_lines:
   name: "remove_list_blank_lines"
-  find: "(^ *(?:[\\*\\-.]|\\d+)\\.* .*\\n)[\\n]+(?=^ *(?:[\\*\\-.]|\\d+)\\.* )"
+  find: "(^ *(?:[*-.]|\\d+)\\.* .*\\n)[\\n]+(?=^ *(?:[*-.]|\\d+)\\.* )"
+  replace: "$1"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false
+
+normalize_blockquote_spaces:
+  name: "normalize_list_spaces"
+  find: "(\\n{0,})\\n*^( *)(>) {2,}"
+  replace: "$1$2$3 "
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false
+
+remove_blockquote_blank_lines:
+  name: "remove_list_blank_lines"
+  find: "(^ *(?:>) *.*\\n)[\\n]+(?=^ *(?:>) *)"
   replace: "$1"
   is_regex: true
   skip_code_blocks: true
@@ -62,6 +78,22 @@ add_new_line_after_bold_or_italicized_lines:
   skip_code_blocks: true
   skip_tables: false
 
+add_new_line_before_blockquotes:
+  name: "add_new_line_before_lists"
+  find: "^(?!$)(?! *(?:>) *)(.*\\n)(?= *(?:>) *)"
+  replace: "$1\\n"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false
+
+add_new_line_after_blockquotes:
+  name: "add_new_line_after_lists"
+  find: "^( *(?:>) *.*\\n)(?! *(?:>) *.*)(?!\\n|$)"
+  replace: "$1\\n"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false
+
 add_new_line_before_lists:
   name: "add_new_line_before_lists"
   find: "^(?!$)(?! *(?:[-*]|\\d+\\.) )(.*\\n)(?= *(?:[-*]|\\d+\\.) )"
@@ -80,7 +112,7 @@ add_new_line_after_lists:
 
 add_new_line_after_paragraphs:
   name: "add_new_line_after_paragraphs"
-  find: "^(?!(?: *(?:[-*]|\\d+\\.)|#+) )(.+\\n)(?!\\n|$)"
+  find: "^(?!(?: *(?:[-*>]|\\d+\\.)|#+) *)(.+\\n)(?!\\n|$)"
   replace: "$1\\n"
   is_regex: true
   skip_code_blocks: true
@@ -176,7 +208,7 @@ replace_ellipsis:
 
 replace_bold_lists_after_first_level_with_italicized:
   name: "replace_bold_lists_after_first_level_with_italicized"
-  find: "^( +(?:[-*]|\\d+\\.) +)\\*{2,}(.+?)\\*{2,}"
+  find: "^( +(?:[-*>]|\\d+\\.) +)\\*{2,}(.+?)\\*{2,}"
   replace: "$1*$2*"
   is_regex: true
   skip_code_blocks: true
@@ -184,7 +216,7 @@ replace_bold_lists_after_first_level_with_italicized:
 
 protect_first_level_bold_list:
   name: "protect_first_level_bold_list"
-  find: "^(\\s*(?:[-*]|\\d+\\.)\\s+){0,1}\\*\\*(.+?)(:){0,1}\\*\\*"
+  find: "^(\\s*(?:[-*>]|\\d+\\.)\\s+){0,1}\\*\\*(.+?)(:){0,1}\\*\\*"
   replace: "$1@@PROTECTED_BOLD_START@@$2$3@@PROTECTED_BOLD_END@@"
   is_regex: true
   skip_code_blocks: true
@@ -192,7 +224,7 @@ protect_first_level_bold_list:
 
 protect_subsequent_level_italicized_list:
   name: "protect_subsequent_level_italicized_list"
-  find: "^(\\s+(?:[-*]|\\d+\\.)\\s+){0,1}\\*(.+?)(:){0,1}\\*"
+  find: "^(\\s+(?:[-*>]|\\d+\\.)\\s+){0,1}\\*(.+?)(:){0,1}\\*"
   replace: "$1@@PROTECTED_ITALICIZED_START@@$2$3@@PROTECTED_ITALICIZED_END@@"
   is_regex: true
   skip_code_blocks: true
@@ -200,7 +232,7 @@ protect_subsequent_level_italicized_list:
 
 protect_first_level_bold_list_tag:
   name: "protect_first_level_bold_list"
-  find: "^(\\s*(?:[-*]|\\d+\\.)\\s+){0,1}\\*\\*(.+?):\\*\\*"
+  find: "^(\\s*(?:[-*>]|\\d+\\.)\\s+){0,1}\\*\\*(.+?):\\*\\*"
   replace: "$1@@PROTECTED_BOLD_START@@$2:@@PROTECTED_BOLD_END@@"
   is_regex: true
   skip_code_blocks: true
@@ -208,7 +240,7 @@ protect_first_level_bold_list_tag:
 
 protect_subsequent_level_italicized_list_tag:
   name: "protect_subsequent_level_italicized_list"
-  find: "^(\\s+(?:[-*]|\\d+\\.)\\s+){0,1}\\*(.+?):\\*"
+  find: "^(\\s+(?:[-*>]|\\d+\\.)\\s+){0,1}\\*(.+?):\\*"
   replace: "$1@@PROTECTED_ITALICIZED_START@@$2:@@PROTECTED_ITALICIZED_END@@"
   is_regex: true
   skip_code_blocks: true
@@ -272,7 +304,7 @@ restore_leading_asterisk:
 
 replace_dashes_with_em_dash:
   name: "replace_dashes_with_em_dash"
-  find: "-{3}"
+  find: "(?<![\\n-])-{3}(?![\\n-])"
   replace: "—"
   is_regex: true
   skip_code_blocks: true

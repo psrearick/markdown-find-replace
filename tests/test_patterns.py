@@ -9,8 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from markdown_find_replace import Pattern
-from markdown_find_replace.pattern_applier import PatternApplier
+from src.markdown_find_replace.core import Pattern
+from src.markdown_find_replace.core.pattern_applier import PatternApplier
 
 
 def load_pattern_catalog():
