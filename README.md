@@ -23,7 +23,7 @@ cd markdown-find-replace
 
 2. Install dependencies:
 ```bash
-pip install -r requirements.txt
+pipx install .
 ```
 
 ## Quick Start
@@ -32,29 +32,29 @@ pip install -r requirements.txt
 
 Replace text in a single file:
 ```bash
-python find_replace.py --path "document.md" --find "old text" --replace "new text"
+frepl --path "document.md" --find "old text" --replace "new text"
 ```
 
 Process all Markdown files in a directory:
 ```bash
-python find_replace.py --path "docs/" --pattern "*.md" --find "old text" --replace "new text"
+frepl --path "docs/" --pattern "*.md" --find "old text" --replace "new text"
 ```
 
 ### Using Configuration Files
 
 Apply predefined patterns:
 ```bash
-python find_replace.py --config config/fr_config.yaml
+frepl --config config/fr_config.yaml
 ```
 
 Use a specific pattern from a patterns file:
 ```bash
-python find_replace.py --patterns-file config/fr_patterns.yaml --pattern-name normalize_list_spaces
+frepl --patterns-file config/fr_patterns.yaml --pattern-name normalize_list_spaces
 ```
 
 Apply a pattern list (multiple patterns at once):
 ```bash
-python find_replace.py --patterns-file config/fr_patterns.yaml --pattern-list-file config/fr_list.yaml --pattern-list-name normalize_markdown
+frepl --patterns-file config/fr_patterns.yaml --pattern-list-file config/fr_list.yaml --pattern-list-name normalize_markdown
 ```
 
 ## Command Line Options
@@ -162,22 +162,22 @@ Each pattern supports the following options:
 
 ### Clean up Markdown formatting
 ```bash
-python find_replace.py --path "docs/" --pattern "*.md" --patterns-file config/fr_patterns.yaml --pattern-list-file config/fr_list.yaml --pattern-list-name normalize_markdown
+frepl --path "docs/" --pattern "*.md" --patterns-file config/fr_patterns.yaml --pattern-list-file config/fr_list.yaml --pattern-list-name normalize_markdown
 ```
 
 ### Remove all bold formatting from a file
 ```bash
-python find_replace.py --path "document.md" --find "\\*\\*(.+?)\\*\\*" --replace "$1"
+frepl --path "document.md" --find "\\*\\*(.+?)\\*\\*" --replace "$1"
 ```
 
 ### Preview changes without applying them
 ```bash
-python find_replace.py --path "docs/" --pattern "*.md" --find "old text" --replace "new text" --dry-run
+frepl --path "docs/" --pattern "*.md" --find "old text" --replace "new text" --dry-run
 ```
 
 ### Convert smart quotes to regular quotes
 ```bash
-python find_replace.py --path "document.md" --find """ --replace "\"" --no-regex
+frepl --path "document.md" --find """ --replace "\"" --no-regex
 ```
 
 ## Smart Code Block Handling
