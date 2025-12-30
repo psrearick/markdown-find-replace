@@ -31,7 +31,7 @@ def test_split_content_sections_identifies_frontmatter_code_and_tables():
         "| v1 | v2 |\n"
     )
 
-    sections = splitter.split(text)
+    sections = splitter.split(text, False)
 
     assert sections[0].is_code_block is True
     assert any(section.is_code_block and "print('hi')" in section.text for section in sections)

@@ -317,3 +317,19 @@ add_line_to_end_of_file:
   is_regex: true
   skip_code_blocks: true
   skip_tables: false
+
+move_colon_inside_bold:
+  name: "move_colon_inside_bold"
+  find: "(\\*\\*.+?)(\\*\\*)(:)"
+  replace: "$1$3$2"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false
+
+remove_horizontal_rules:
+  name: "remove_horizontal_rules"
+  find: "\\n\\n---\\n\\n"
+  replace: "\\n\\n"
+  is_regex: true
+  skip_code_blocks: true
+  skip_tables: false

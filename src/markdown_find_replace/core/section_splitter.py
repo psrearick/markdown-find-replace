@@ -7,7 +7,7 @@ TABLE_SEPARATOR_RE = re.compile(r'^\|?(\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?$')
 
 
 class SectionSplitter:
-    def split(self, content: str) -> List[Section]:
+    def split(self, content: str, frontmatter_in_body: bool) -> List[Section]:
         sections: List[Section] = []
         working_content = content
         line_number = 1
@@ -35,9 +35,10 @@ class SectionSplitter:
             stripped = line.strip()
             toggled = False
 
-            if stripped.startswith('---') and not in_code_block:
-                in_yaml_block = not in_yaml_block
-                toggled = True
+            if frontmatter_in_body:
+                if stripped.startswith('---') and not in_code_block:
+                    in_yaml_block = not in_yaml_block
+                    toggled = True
 
             if stripped.startswith('```') and not in_yaml_block:
                 in_code_block = not in_code_block

@@ -2,13 +2,11 @@ import json
 from typing import Any, Dict, Optional
 import yaml
 
-
 def load_config_file(config_path: str) -> Dict:
     with open(config_path, encoding='utf-8') as handle:
         if config_path.endswith(('.yaml', '.yml')):
             return yaml.safe_load(handle)
         return json.load(handle)
-
 
 def generate_config_dict(args: Optional[Any] = None) -> Dict:
     return {
@@ -16,6 +14,7 @@ def generate_config_dict(args: Optional[Any] = None) -> Dict:
         'pattern': args.pattern if args else None,
         'find': args.find if args else None,
         'replace': args.replace if args else None,
+        'frontmatter_in_body': args.frontmatter_in_body if args else None,
         'is_regex': (not args.no_regex) if args and args.no_regex else None,
         'recursive': (not args.no_recursive) if args and args.no_recursive else None,
         'dry_run': args.dry_run if args and args.dry_run else None,
@@ -26,13 +25,15 @@ def generate_config_dict(args: Optional[Any] = None) -> Dict:
         'ensure_new_line': args.ensure_new_line if args and args.ensure_new_line else None,
     }
 
-
 def set_config_values(config: Dict, config_path: str) -> Dict:
     file_config = load_config_file(config_path)
     merged_config = file_config.copy()
 
     for key, value in config.items():
         if key == 'is_regex' and config.get('is_regex') is False:
+            merged_config[key] = False
+            continue
+        if key == 'frontmatter_in_body' and config.get('frontmatter_in_body') is False:
             merged_config[key] = False
             continue
         if key == 'recursive' and config.get('recursive') is False:

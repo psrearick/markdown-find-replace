@@ -9,6 +9,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--pattern', help='File pattern to match (e.g., "*.md")')
     parser.add_argument('--find', help='Find pattern')
     parser.add_argument('--replace', help='Replace pattern')
+    parser.add_argument('--frontmatter_in_body', action='store_true', help='Has frontmatter in mardown body')
     parser.add_argument('--no-regex', action='store_true', help='Treat find pattern as plain text')
     parser.add_argument('--no-recursive', action='store_true', help='Disable recursive directory search')
     parser.add_argument('--dry-run', action='store_true', help='Show changes without applying them')

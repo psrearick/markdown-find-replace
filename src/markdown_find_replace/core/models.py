@@ -28,6 +28,7 @@ class Config:
     find: Optional[str] = None
     replace: Optional[str] = None
     is_regex: bool = True
+    frontmatter_in_body: bool = False
     recursive: bool = True
     dry_run: bool = False
     patterns_file: Optional[str] = None

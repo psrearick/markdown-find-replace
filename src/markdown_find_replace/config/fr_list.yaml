@@ -25,6 +25,7 @@ normalize_markdown:
   - "replace_left_double_smart_quote"
   - "replace_right_double_smart_quote"
   - "replace_ellipsis"
+  - "move_colon_inside_bold"
 
 novel:
   - "tabs_to_spaces"
@@ -70,3 +71,6 @@ remove_bold_italics_backticks:
   - "restore_protected_bold"
   - "restore_protected_italicized"
   - "restore_leading_asterisk"
+
+remove_horizontal_rules:
+  - "remove_horizontal_rules"

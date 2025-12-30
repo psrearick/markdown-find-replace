@@ -47,7 +47,7 @@ class FileProcessor:
             print(f"{Fore.RED}Error processing {file_path}: {error}{Style.RESET_ALL}")
             return
 
-        sections = self.splitter.split(content)
+        sections = self.splitter.split(content, self.config.frontmatter_in_body)
         new_content_parts: List[str] = []
         all_changes: List[tuple[int, str, str]] = []
 
